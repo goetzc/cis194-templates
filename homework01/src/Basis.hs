@@ -21,7 +21,11 @@ module Basis where
 -- []
 
 toDigits :: Integer -> [Integer]
-toDigits = undefined
+toDigits num
+  | num <= 0  = []
+  | otherwise = map fromCharToInt (show num)
+  where
+    fromCharToInt c = read [c] :: Integer
 
 ----------------------------------------------------------------------
 -- Exercise 2
@@ -35,7 +39,9 @@ toDigits = undefined
 -- [1,4,3]
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther = undefined
+doubleEveryOther = zipWith (*) onesAndTwos
+  where
+    onesAndTwos = 1 : 2 : onesAndTwos
 
 ----------------------------------------------------------------------
 -- Exercise 3
@@ -47,7 +53,7 @@ doubleEveryOther = undefined
 -- 22
 
 sumDigits :: [Integer] -> Integer
-sumDigits = undefined
+sumDigits = sum . map (sum . toDigits)
 
 ----------------------------------------------------------------------
 -- Exercise 4
@@ -61,7 +67,12 @@ sumDigits = undefined
 -- False
 
 validate :: Integer -> Bool
-validate = undefined
+validate value
+  | cardSum value `mod` 10 == 0 = True
+  | otherwise                   = False
+   where
+     cardSum =
+       sumDigits . doubleEveryOther . toDigits
 
 ----------------------------------------------------------------------
 -- Exercise 5
@@ -76,7 +87,12 @@ type Move = (Peg, Peg)
 -- [("a","c"),("a","b"),("c","b")]
 
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
-hanoi = undefined
+hanoi n a b c
+  | n <= 0    = []
+  | n == 1    = [(a,b)]
+  | otherwise = hanoi (n-1) a c b ++
+                hanoi 1 a b c ++
+                hanoi (n-1) c b a
 
 ----------------------------------------------------------------------
 -- Exercise 6 (Optional)
