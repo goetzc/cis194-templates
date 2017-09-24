@@ -7,6 +7,8 @@
 
 module Golf where
 
+import           Data.List
+
 ----------------------------------------------------------------------
 -- Exercise 1
 ----------------------------------------------------------------------
@@ -25,7 +27,9 @@ module Golf where
 -- []
 
 skips :: [a] -> [[a]]
-skips = undefined
+skips [] = []
+-- skips l@(_:xs) = l : skips xs
+skips x  = init $ tails x
 
 ----------------------------------------------------------------------
 -- Exercise 2
@@ -41,7 +45,10 @@ skips = undefined
 -- []
 
 localMaxima :: [Integer] -> [Integer]
-localMaxima = undefined
+localMaxima (x:x2:x3:xs)
+  | x < x2 && x2 > x3 = x2 : localMaxima (x2:x3:xs)
+  | otherwise         = localMaxima (x2:x3:xs)
+localMaxima _ = []
 
 ----------------------------------------------------------------------
 -- Exercise 3
